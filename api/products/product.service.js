@@ -2,7 +2,7 @@ const pool = require("../../config/database");
 module.exports = {
     getProducts: callBack => {
         pool.query(
-            'select * from product', [],
+            'select *, typeName from product p, product_type t where p.idProductType = t.idProductType', [],
             (error, results, fields) => {
                 if (error) {
                     callBack(error);
@@ -31,6 +31,20 @@ module.exports = {
             }
         );
     },
+    // getProductsByName: (data, callBack) => {
+    //     pool.query("select * from product where productName like '% ? %' or productName like ' ? %' or productName like '% ?'", [
+    //             data.productName,
+    //             data.productName,
+    //             data.productName,
+    //         ],
+    //         (error, results, fields) => {
+    //             if (error) {
+    //                 callBack(error);
+    //             }
+    //             return callBack(null, results);
+    //         }
+    //     );
+    // },
     updateQuantityProduct: (data, callBack) => {
         pool.query(
             'update product set productQuantity = ? where idProduct = ? ', [

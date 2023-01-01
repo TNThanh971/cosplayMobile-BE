@@ -12,7 +12,7 @@ const { sign } = require("jsonwebtoken");
 module.exports = {
     createUser: (req, res) => {
         const body = req.body;
-        console.log(body);
+        //console.log(body);
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
         create(body, (err, results) => {
@@ -25,7 +25,7 @@ module.exports = {
             }
             return res.status(200).json({
                 success: 1,
-                data: results
+                data: results[0]
             });
         });
     },
@@ -64,8 +64,7 @@ module.exports = {
     updateUser: (req, res) => {
         const body = req.body;
         const salt = genSaltSync(10);
-        body.password = hashSync(body.params, salt);
-        console.log(body);
+        body.password = hashSync(body.password, salt);
         updateUser(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -79,7 +78,8 @@ module.exports = {
             }
             return res.json({
                 success: 1,
-                message: 'Updated successfully'
+                message: 'Updated successfully',
+                data: results
             });
         });
     },
@@ -111,13 +111,14 @@ module.exports = {
             }
             const result = compareSync(body.password, results.password);
             if (result) {
-                results.password = undefined;
+                //results.password = undefined;
                 const jsontoken = sign({ result: results }, "qwe1234", {
                     expiresIn: "1h"
                 });
                 return res.json({
                     success: 1,
                     message: "login successfully",
+                    data: results,
                     token: jsontoken
                 });
             } else {

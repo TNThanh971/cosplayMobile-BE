@@ -15,7 +15,7 @@ module.exports = {
             }
             return res.json({
                 success: 1,
-                message: results
+                data: results
             });
         });
     },
@@ -43,6 +43,26 @@ module.exports = {
         const idProductType = req.params.idProductType;
         console.log(idProductType);
         getProductsByType(idProductType, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            if (!results) {
+                return res.json({
+                    success: 0,
+                    message: "Record not found"
+                });
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        });
+    },
+    getProductsByName: (req, res) => {
+        const productName = req.body;
+        console.log(productName);
+        getProductsByType(body.productName, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
