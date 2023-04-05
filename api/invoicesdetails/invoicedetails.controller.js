@@ -9,7 +9,7 @@ module.exports = {
         console.log(body);
         createInvoiceDetail(body, (err, results) => {
             if (err) {
-                return res.status(500).jsom({
+                return res.status(500).json({
                     success: 0,
                     message: "Database connection error"
                 });

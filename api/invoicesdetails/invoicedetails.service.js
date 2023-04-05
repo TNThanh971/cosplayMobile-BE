@@ -2,13 +2,11 @@ const pool = require("../../config/database");
 module.exports = {
     createInvoiceDetail: (data, callBack) => {
         pool.query(
-            'insert into invoice_detail(idProduct, quantity, idInvoice, product_rental_price, startDay, amountOfDay) values (?,?,?,?,?,?)', [
+            'insert into invoice_detail(idProduct, quantity, idInvoice, productRentalPrice) values (?,?,?,?)', [
                 data.idProduct,
                 data.quantity,
                 data.idInvoice,
-                data.product_rental_price,
-                data.startDay,
-                data.amountOfDay
+                data.productRentalPrice
             ],
             (error, results) => {
                 if (error) {
@@ -20,7 +18,7 @@ module.exports = {
     },
     getInvoiceDetail: (idInvoice, callBack) => {
         pool.query(
-            'select * from invoice_detail where idInvoice =?', [idInvoice],
+            'select i.*, p.productName, p.productUrlImage, p.productPrice,p.productWeight,p.productSize from invoice_detail i, product p where idInvoice =? and i.idProduct = p.idProduct', [idInvoice],
             (error, results) => {
                 if (error) {
                     callBack(error);
